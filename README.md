@@ -54,8 +54,8 @@ import java.util.Random;
 public class SimpleLSHMinHashExample {
 
     public static void main(String[] args) {
-        //向量中0的比例
-        //如果向量密集(很多1)，平均jaccard相似性将非常高(特别是对于大的向量)
+        // 向量中0的比例
+        // 如果向量密集(很多1)，平均jaccard相似性将非常高(特别是对于大的向量)
         // LSH将无法区分它们，导致所有的向量将被绑定到同一个桶中
         double sparsity = 0.75;
         
