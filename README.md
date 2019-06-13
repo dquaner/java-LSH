@@ -238,7 +238,6 @@ public class LSHMinHashExample {
 
 这条曲线非常重要!它表明，如果所有集合都是相似的(相似度高于0.6)，那么所有集合很可能都落在一个桶中。因此，所有其他桶很可能都是空的。例如，如果数据集倾斜并呈现某种主要方向，就会发生这种情况。
 
-At the opposite, if your sets are all different from each other (similarity below 0.2), the curve is nearly flat. This means that pairs of sets have the same probability of falling in the same bucket, independantly of their similarity. The items are then randomly binned into the buckets. If using B buckets and S stages, computing the probability that two items are binned in the same bucket is similar to the problem of rolling S times a dice with B values. The resuling probability is 1 - [(B-1) / B]^S. The computed probability for 10 buckets is presented in table below, and roughly correspond to the above graph.
 相反，如果你的集合彼此不同(相似度低于0.2)，曲线几乎是平的。这意味着集合有相同的概率落在同一个桶里，与它们的相似性无关。然后这些物品被随机地扔进桶里。如果使用B桶和S段，计算两个项目在同一个桶中被绑定的概率类似于滚动S次一个具有B值的骰子。结果的概率是1 - [(B-1) / B]^S。计算出的10个桶的概率如表所示，大致对应于上图。
 
 
@@ -399,13 +398,12 @@ public class MyApp {
 
 ## Comparable signatures
 
+当LSH对象被实例化时，哈希函数的参数被随机初始化:
+* 两个LSH对象将为相同的输入向量产生不同的散列和签名;
+* 程序的两次执行将为相同的输入向量产生不同的散列和签名;
+* 两个不同的LSH对象产生的签名不能用来估计向量之间的相似性。
 
-As the parameters of the hashing function are randomly initialized when the LSH object is instantiated:
-* two LSH objects will produce different hashes and signatures for the same input vector;
-* two executions of your program will produce different hashes and signatures for the same input vector;
-* the signatures produced by two different LSH objects can not be used to estimate the similarity between vectors.
-
-There are two possibilities to produce comparable signatures: provide an initial seed or serialize your hash object.
+有两种可能产生可比较的签名:提供初始种子或序列化散列对象。
 
 ### Initial seed
 
