@@ -58,22 +58,12 @@ public class SimpleLSHMinHashExample {
         // 如果向量密集(很多1)，平均jaccard相似性将非常高(特别是对于大的向量)
         // LSH将无法区分它们，导致所有的向量将被绑定到同一个桶中
         double sparsity = 0.75;
-        
         // Number of sets
         int count = 10000;
-        
         // Size of vectors
         int n = 100;
-        
-        // LSH parameters
-        // the number of stages is also sometimes called thge number of bands
-        int stages = 2;
-        
-        // Attention: to get relevant results, the number of elements per bucket
-        // should be at least 100
-        int buckets = 10;
-        
-        // Let's generate some random sets
+	
+	// Let's generate some random sets
         boolean[][] vectors = new boolean[count][n];
         Random rand = new Random();
         
@@ -82,6 +72,14 @@ public class SimpleLSHMinHashExample {
                 vectors[i][j] = rand.nextDouble() > sparsity;
             }
         }
+        
+        // LSH parameters
+        // the number of stages is also sometimes called thge number of bands
+        int stages = 2;
+        
+        // Attention: to get relevant results, the number of elements per bucket
+        // should be at least 100
+        int buckets = 10;
         
         // Create and configure LSH algorithm
         LSHMinHash lsh = new LSHMinHash(stages, buckets, n);
