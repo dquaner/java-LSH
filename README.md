@@ -74,11 +74,11 @@ public class SimpleLSHMinHashExample {
         }
         
         // LSH parameters
-        // the number of stages is also sometimes called thge number of bands
+        // the number of stages is also sometimes called the number of bands
         int stages = 2;
         
-        // Attention: to get relevant results, the number of elements per bucket
-        // should be at least 100
+        // Number of buckets
+        // Attention: 为了得到有意义的结果，每个桶里的元素至少100个
         int buckets = 10;
         
         // Create and configure LSH algorithm
@@ -125,7 +125,7 @@ public class SimpleLSHMinHashExample {
 }
 ```
 
-Pay attention, LSH using MinHash is very sensitive to the average Jaccard similarity in your dataset! If most vectors in your dataset have a Jaccard similarity above or below 0.5, they might all fall in the same bucket. This is illustrated by example below:
+注意，使用MinHash的LSH对数据集中Jaccard的平均相似性非常敏感!如果数据集中的大多数向量都具有高于或低于0.5的Jaccard相似性，那么它们可能都属于同一个桶。下面的例子说明了这一点:
 
 ```java
 import info.debatty.java.lsh.LSHMinHash;
@@ -228,17 +228,18 @@ public class LSHMinHashExample {
 }
 ```
 
-This example will run LSH binning for different number of stages. At each step, for each value of Jaccard similarity between pairs of sets (in the range [0, 0.1, 0.2, ... 1.0]), the program computes the probability that these two pairs fall in the same bucket for at least one stage. The results can be plotted with Gnuplot for example:
+本例设置不同数量的桶运行LSH。在每一步，对于每对集合之间的Jaccard相似性值(取值范围为[0, 0.1, 0.2, ... 1.0])，程序计算这两对至少在一个段落入同一桶中的概率。结果可以用Gnuplot绘制，例如:
 
 ![alt tag](https://raw.githubusercontent.com/tdebatty/java-LSH/master/lsh-minhash.png)
 
-On this figure, the x-axis is the Jaccard similarity between sets, the y-axis is the probability that these pairs fall in the same bucket for at least one stage. The different series represent different values for the number of stages (from 1 to 10).
+在这个图中，x轴是集之间的Jaccard相似性，y轴是这些对至少在一个阶段落入同一桶中的概率。不同的级数表示不同的段数band(从1到10)。
 
-We can clearly recognize the typical S curve of MinHash, with the threshold (the point where the curve is the steepest) located around x = 0.5.
+我们可以清楚地看到MinHash的典型S曲线，阈值(曲线最陡的点)在x = 0.5左右。
 
-This curve is very important! It shows that if all your sets are similar (similarity above 0.6), all sets will most probably fall in a single bucket. And all other buckets will thus most probably be empty. This can happen for example if your dataset is skewed and presents some sort of principal direction.
+这条曲线非常重要!它表明，如果所有集合都是相似的(相似度高于0.6)，那么所有集合很可能都落在一个桶中。因此，所有其他桶很可能都是空的。例如，如果数据集倾斜并呈现某种主要方向，就会发生这种情况。
 
 At the opposite, if your sets are all different from each other (similarity below 0.2), the curve is nearly flat. This means that pairs of sets have the same probability of falling in the same bucket, independantly of their similarity. The items are then randomly binned into the buckets. If using B buckets and S stages, computing the probability that two items are binned in the same bucket is similar to the problem of rolling S times a dice with B values. The resuling probability is 1 - [(B-1) / B]^S. The computed probability for 10 buckets is presented in table below, and roughly correspond to the above graph.
+相反，如果你的集合彼此不同(相似度低于0.2)，曲线几乎是平的。这意味着集合有相同的概率落在同一个桶里，与它们的相似性无关。然后这些物品被随机地扔进桶里。如果使用B桶和S段，计算两个项目在同一个桶中被绑定的概率类似于滚动S次一个具有B值的骰子。结果的概率是1 - [(B-1) / B]^S。计算出的10个桶的概率如表所示，大致对应于上图。
 
 
 | Stages | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
@@ -247,7 +248,7 @@ At the opposite, if your sets are all different from each other (similarity belo
 
 ### Signatures
 
-If you simply wish to compute MinHash signatures (witout performing LSH binning), you can directly use the MinHash class:
+如果你只是想计算MinHash签名(没有执行LSH绑定)，你可以直接使用MinHash类:
 
 ```java
 import info.debatty.java.lsh.MinHash;
